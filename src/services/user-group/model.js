@@ -38,6 +38,10 @@ const courseModel = mongoose.model('course', getUserGroupSchema({
 	teacherIds: [{type: Schema.Types.ObjectId, required: true, ref: 'user'}],
 	substitutionIds: [{type: Schema.Types.ObjectId, required: true, ref: 'user'}],
 	ltiToolIds: [{type: Schema.Types.ObjectId, required: true, ref: 'ltiTool'}],
+	subjectId: {
+		type: Schema.Types.ObjectId,
+		ref: 'subjecttype'
+	},
 	color: {type: String, required: true, 'default': '#1DE9B6'},
 	startDate: {type: Date},
 	untilDate: {type: Date},
