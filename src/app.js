@@ -21,6 +21,8 @@ const setupSwagger = require('./swagger');
 const prettyError = require('pretty-error').start();
 const allHooks = require('./app.hooks');
 
+const proxy = require('express-http-proxy');
+
 require('console-stamp')(console);
 require('console-stamp')(winston );
 
@@ -38,9 +40,12 @@ setupSwagger(app);
 
 app.set("secrets", secrets);
 
+const serviceUrls = app.get('services') || {};
+
 app.use(compress())
 	.options('*', cors())
 	.use(cors())
+	.use('/server-side-rendering', proxy(serviceUrls.serverSideRendering))
 	.use(favicon(path.join(app.get('public'), 'favicon.ico')))
 	.use('/', serveStatic(app.get('public')))
 	.use(bodyParser.json())
