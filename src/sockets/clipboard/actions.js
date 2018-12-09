@@ -1,7 +1,10 @@
+const config = require('./config');
+
 module.exports = (socket) => {
 
     socket.on('disconnect', function () {
         const {user, course} = socket.meta;
+        if(!course) return;
         delete course.users[user.id];
         course.desks[user.bucket][user.id].userConnected = false;
         course.broadcastUpdate('users', 'desks');
@@ -10,6 +13,11 @@ module.exports = (socket) => {
     socket.on("ADD_MEDIA", (meta) => {
         const {user, course} = socket.meta;
         let medium = meta.medium;
+        if(medium.type === 'etherpad') {
+            const rand = Math.floor((1 + Math.random()) * 0x10000);
+            let name = medium.etherpadName;
+            medium.src = config.etherpadURL + `clipboard-${rand}-${name}?showControls=true&showChat=false&showLineNumbers=true&useMonospaceFont=false&lang=de`;
+        }
         medium.id = ++course.lastId;
         medium.sender = user && user.name;
         medium.senderId = user && user.id;

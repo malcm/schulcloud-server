@@ -42,3 +42,4 @@ backup/*
 
 #clipboard uploads
 uploads/*
+src/sockets/clipboard/config.js
