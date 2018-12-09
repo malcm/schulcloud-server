@@ -38,11 +38,29 @@ module.exports = function () {
 					students: {},
 					teachers: {}
 				},
-				board: {
-					layout: '1x1',
-					media: {}
-				},
 				lastId: 0,
+				reset() {
+					this.lastId = 0;
+					let teacherIds = Object.keys(this.users.teachers);
+					let studentIds = Object.keys(this.users.students);
+					Object.keys(this.desks.teachers).forEach((id) => {
+						if(teacherIds.indexOf(id) >= 0) {
+							this.desks.teachers[id].media = [];
+							this.desks.teachers[id].board.media = {};
+						} else {
+							delete this.desks.teachers[id];
+						}
+					});
+					Object.keys(this.desks.students).forEach((id) => {
+						if(studentIds.indexOf(id) >= 0) {
+							this.desks.students[id].media = [];
+							this.desks.students[id].board.media = {};
+						} else {
+							delete this.desks.students[id];
+						}
+					});
+					this.desks.groups = {};
+				},
 				broadcastUpdate(...keys) {
 					const update = keys.reduce((acc, key) => {
 						acc[key] = this[key];
@@ -54,7 +72,6 @@ module.exports = function () {
 						_id: socket.meta._id
 					}, {
 						state: {
-							board: this.board,
 							desks: this.desks,
 							lastId: this.lastId
 						}

@@ -12,6 +12,7 @@ module.exports = (socket) => {
         let medium = meta.medium;
         medium.id = ++course.lastId;
         medium.sender = user && user.name;
+        medium.senderId = user && user.id;
         if(!course.desks[meta.deskType][meta.desk]) return;
         course.desks[meta.deskType][meta.desk].media.push(medium);
         course.broadcastUpdate('desks');
@@ -24,7 +25,11 @@ module.exports = (socket) => {
             Object.keys(course.desks[deskType]).forEach((desk) => {
                 desk = course.desks[deskType][desk];
                 if(desk.media) {
-                    desk.media = desk.media.filter((medium) => medium.id !== id);
+                    desk.media = desk.media.filter((medium) => 
+                       !(medium.id === id 
+                            && (user.id === medium.senderId || user.role === 'teacher')
+                       )
+                    );
                 }
             });
         });
@@ -76,6 +81,20 @@ module.exports = (socket) => {
             },
             name
         };
+        course.broadcastUpdate('desks');
+    });
+
+    socket.on("DELETE_GROUP_DESK", ({name}) => {
+        const { course, user } = socket.meta;
+        if(user.role !== 'teacher') return;
+        delete course.desks.groups[name];
+        course.broadcastUpdate('desks');
+    });
+
+    socket.on("RESET_CLIPBOARD", () => {
+        const { course, user } = socket.meta;
+        if(user.role !== 'teacher') return;
+        course.reset();
         course.broadcastUpdate('desks');
     });
 };
