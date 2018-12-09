@@ -40,6 +40,9 @@ backup/*
 # Visual Studio Code data
 .vscode
 
+# local dev secrets
+config/secrets.json
+
 #clipboard uploads
 uploads/*
 src/sockets/clipboard/config.js
