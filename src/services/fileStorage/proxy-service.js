@@ -630,7 +630,9 @@ module.exports = function () {
 	].forEach(path => {
 		// Get our initialize service to that we can bind hooks
 		const service = app.service(path);
-		service.before(before);
-		service.after(after);
+		service.hooks({
+			before,
+			after
+		});
 	});
 };

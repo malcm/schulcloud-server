@@ -22,9 +22,8 @@ module.exports = function () {
 	// Get our initialize service to that we can bind hooks
 	const systemService = app.service('/systems');
 
-	// Set up our before hooks
-	systemService.before(hooks.before);
-
-	// Set up our after hooks
-	systemService.after(hooks.after);
+	systemService.hooks({
+		before: hooks.before,
+		after: hooks.after
+	});
 };

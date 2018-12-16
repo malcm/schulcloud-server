@@ -60,10 +60,13 @@ module.exports = function () {
 	const releaseService = app.service('/releases');
 
 	// Set up our before hooks
-	releaseService.before(hooks.before(releaseService));
-	releaseFetchService.before(hooks.before(releaseFetchService));
+	releaseService.hooks({
+		before: hooks.before(releaseService),
+		after: hooks.after
+	});
 
-	// Set up our after hooks
-	releaseService.after(hooks.after);
-	releaseFetchService.after(hooks.after);
+	releaseFetchService.hooks({
+		before: hooks.before(releaseFetchService),
+		after: hooks.after
+	});
 };

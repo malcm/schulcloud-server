@@ -122,11 +122,13 @@ module.exports = function () {
 	const resourcesService = app.service('/content/resources');
 	const searchService = app.service('/content/search');
 
-	// Set up our before hooks
-	resourcesService.before(hooks.before);
-	searchService.before(hooks.before);
+	resourcesService.hooks({
+		before: hooks.before,
+		after: hooks.after
+	});
 
-	// Set up our after hooks
-	resourcesService.after(hooks.after);
-	searchService.after(hooks.after);
+	searchService.hooks({
+		before: hooks.before,
+		after: hooks.after
+	});
 };

@@ -143,8 +143,8 @@ module.exports = function () {
 	const statisticsService = app.service('/statistics');
 
 	// Set up our before hooks
-	statisticsService.before(hooks.before);
-
-	// Set up our after hooks
-	statisticsService.after(hooks.after);
+	statisticsService.hooks({
+		before: hooks.before,
+		after: hooks.after
+	});
 };

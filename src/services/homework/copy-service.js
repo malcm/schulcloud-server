@@ -76,8 +76,8 @@ module.exports = function () {
 	const homeworkCopyService = app.service('/homework/copy');
 
 	// Set up our before hooks
-	homeworkCopyService.before(hooks.before);
-
-	// Set up our after hooks
-	homeworkCopyService.after(hooks.after);
+	homeworkCopyService.hooks({
+		before: hooks.before,
+		after: hooks.after
+	});
 };

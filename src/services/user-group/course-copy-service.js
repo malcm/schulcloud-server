@@ -178,6 +178,10 @@ module.exports = function () {
 	const courseShareService = app.service('/courses/share');
 
 	// Set up our before hooks
-	courseCopyService.before(hooks.before);
-	courseShareService.before(hooks.beforeShare);
+	courseCopyService.hooks({
+		before: hooks.before
+	});
+	courseShareService.hooks({
+		before: hooks.beforeShare
+	});
 };

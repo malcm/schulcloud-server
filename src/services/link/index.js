@@ -163,8 +163,8 @@ module.exports = function () {
 	linkService = app.service('/link');
 	
 	// Set up our before hooks
-	linkService.before(hooks.before(linkService));
-	
-	// Set up our after hooks
-	linkService.after(hooks.after);
+	linkService.hooks({
+		before: hooks.before(linkService),
+		after: hooks.after
+	});
 };

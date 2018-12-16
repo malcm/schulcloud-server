@@ -22,9 +22,8 @@ module.exports = function() {
   // Get our initialize service to that we can bind hooks
   const ltiToolService = app.service('/ltiTools');
 
-  // Set up our before hooks
-  ltiToolService.before(hooks.before);
-
-  // Set up our after hooks
-  ltiToolService.after(hooks.after);
+  ltiToolService.hooks({
+		before: hooks.before,
+		after: hooks.after
+	});
 };

@@ -22,9 +22,8 @@ module.exports = function () {
 	// Get our initialize service to that we can bind hooks
 	const roleService = app.service('/roles');
 
-	// Set up our before hooks
-	roleService.before(hooks.before(app));
-
-	// Set up our after hooks
-	roleService.after(hooks.after);
+	roleService.hooks({
+		before: hooks.before(app),
+		after: hooks.after
+	});
 };

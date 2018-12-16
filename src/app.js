@@ -5,18 +5,24 @@ const serveStatic = require('feathers').static;
 const favicon = require('serve-favicon');
 const compress = require('compression');
 const cors = require('cors');
-const feathers = require('feathers');
-const configuration = require('feathers-configuration');
+
+const feathers = require('@feathersjs/feathers');
+const configuration = require('@feathersjs/configuration');
+const express = require('@feathersjs/express');
+const socketio = require('@feathersjs/socketio');
+
+// const feathers = require('feathers');
+// const configuration = require('feathers-configuration');
 const hooks = require('feathers-hooks');
-const rest = require('feathers-rest');
+// const rest = require('feathers-rest');
 const bodyParser = require('body-parser');
-const socketio = require('feathers-socketio');
+// const socketio = require('feathers-socketio');
 const middleware = require('./middleware');
 const services = require('./services');
 const winston = require('winston');
 const defaultHeaders = require('./middleware/defaultHeaders');
-const handleResponseType = require('./middleware/handleReponseType');
-const setupSwagger = require('./swagger');
+// const handleResponseType = require('./middleware/handleReponseType');
+// const setupSwagger = require('./swagger');
 const prettyError = require('pretty-error').start();
 const allHooks = require('./app.hooks');
 
@@ -32,11 +38,12 @@ try {
 	secrets = {};
 }
 
-const app = feathers();
+const app = express(feathers());
+// const app = feathers();
 let config = configuration(path.join(__dirname, '..'));
 
 app.configure(config);
-setupSwagger(app);
+// setupSwagger(app);
 
 app.set("secrets", secrets);
 
@@ -53,8 +60,8 @@ app.use(compress())
 	.get('/system_info/haproxy', (req, res) => { res.send({ "timestamp":new Date().getTime() });})
 	.get('/ping', (req, res) => { res.send({ "message":"pong","timestamp":new Date().getTime() });})
 
-	.configure(hooks())
-	.configure(rest(handleResponseType))
+	// .configure(hooks())
+	// .configure(rest(handleResponseType))
 	.configure(socketio())
 
 	// auth is setup in /authentication/

@@ -56,9 +56,12 @@ module.exports = function () {
 	const userService = app.service('/users');	
 	app.use('users/linkImport',new UserLinkImportService(userService));	//do not use hooks
 
-	
-	userService.before(hooks.before(app));	// TODO: refactor
-	userService.after(hooks.after);
+	userService.hooks({
+		before: hooks.before(app),
+		after: hooks.after
+	});
+	// userService.before();	// TODO: refactor
+	// userService.after(hooks.after);
 
 	/* publicTeachers Service */
 	app.use('/publicTeachers', service({
@@ -71,9 +74,10 @@ module.exports = function () {
 	}));
 
 	const publicTeachersService = app.service('/publicTeachers');
-	publicTeachersService.before(publicTeachersHooks.before);
-	publicTeachersService.after(publicTeachersHooks.after);
-
+	publicTeachersService.hooks({
+		before: publicTeachersHooks.before,
+		after: publicTeachersHooks.after
+	});
 
 	/* registrationPin Service */
 	app.use('/registrationPins', service({
@@ -84,8 +88,10 @@ module.exports = function () {
 		}
 	}));
 	const registrationPinService = app.service('/registrationPins');
-	registrationPinService.before(registrationPinsHooks.before);
-	registrationPinService.after(registrationPinsHooks.after);
+	registrationPinService.hooks({
+		before: registrationPinsHooks.before,
+		after: registrationPinsHooks.after
+	})
 
 	const RegistrationService = require('./registration')(app);
 	app.use('/registration', new RegistrationService());
@@ -93,7 +99,8 @@ module.exports = function () {
 	const FirstLoginService = require('./firstLogin')(app);
 	app.use('/firstLogin', new FirstLoginService());
 	const firstLoginService = app.service('firstLogin');
-	firstLoginService.before(firstLoginHooks.before);
-	firstLoginService.after(firstLoginHooks.after);
-
+	firstLoginService.hooks({
+		before: firstLoginHooks.before,
+		after: firstLoginHooks.after
+	});
 };

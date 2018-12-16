@@ -151,11 +151,15 @@ module.exports = function () {
 	const lessonCopyService = app.service('/lessons/copy');
 
 	// Set up our before hooks
-	systemService.before(hooks.before);
-	lessonFilesService.before(hooks.before);
-	lessonCopyService.before(copyHooks.before);
-
-	// Set up our after hooks
-	systemService.after(hooks.after);
-	lessonFilesService.after(hooks.after);
+	systemService.hooks({
+		before: hooks.before,
+		after: hooks.after
+	});
+	lessonFilesService.hooks({
+		before: hooks.before,
+		after: hooks.after
+	});
+	lessonCopyService.hooks({
+		before: copyHooks.before
+	});
 };

@@ -46,10 +46,12 @@ module.exports = function () {
 	const changePasswordService = app.service('/passwordRecovery/reset');
 
 	// Set up our before hooks
-	passwordRecoveryService.before(hooks.before);
-	changePasswordService.before(hooks.before);
-
-	// Set up our after hooks
-	passwordRecoveryService.after(hooks.after);
-	changePasswordService.after(hooks.after);
+	passwordRecoveryService.hooks({
+		before: hooks.before,
+		after: hooks.after
+	});
+	changePasswordService.hooks({
+		before: hooks.before,
+		after: hooks.after
+	});
 };

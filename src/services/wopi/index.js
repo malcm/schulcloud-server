@@ -171,10 +171,12 @@ module.exports = function () {
 	const filesContentService = app.service(wopiPrefix + ':fileId/contents');
 
 	// Set up our before hooks
-	filesService.before(hooks.before);
-	filesContentService.before(hooks.before);
-
-	// Set up our after hooks
-	filesService.after(hooks.after);
-	filesContentService.after(hooks.after);
+	filesService.hooks({
+		before: hooks.before,
+		after: hooks.after
+	});
+	filesContentService.hooks({
+		before: hooks.before,
+		after: hooks.after
+	});
 };

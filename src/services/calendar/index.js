@@ -293,11 +293,10 @@ module.exports = function () {
 	// Get our initialize service to that we can bind hooks
 	const contentService = app.service('/calendar');
 
-	// Set up our before hooks
-	contentService.before(hooks.before);
-
-	// Set up our after hooks
-	contentService.after(hooks.after);
+	contentService.hooks({
+		before: hooks.before,
+		after: hooks.after
+	})
 };
 
 module.exports.Service = Service;
